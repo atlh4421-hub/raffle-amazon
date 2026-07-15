@@ -19,7 +19,7 @@ EMAIL_PRINCIPAL = "alexis.dupont2@icloud.com"  # <--- METS TON EMAIL ENTRE LES G
 PASSWORD = "btyd-sevh-vioq-hxca"  
 # --------------------------------------
 
-# Interface de l'application (plus de case email !)
+# Interface de l'application
 st.title("🎉 Amazon Raffle Tracker")
 st.write("Toutes vos victoires redirigées au même endroit.")
 
@@ -41,7 +41,12 @@ def fetch_raffles(days, keyword):
         if status != "OK":
             return False, "Erreur lors de la recherche des emails."
 
-        email_ids = messages[0].split()
+        # --- CORRECTION DU BUG NONETYPE ICI ---
+        if not messages or messages[0] is None:
+            email_ids = []
+        else:
+            email_ids = messages[0].split()
+        # --------------------------------------
         
         for e_id in email_ids:
             res, msg_data = mail.fetch(e_id, "(RFC822)")
